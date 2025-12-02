@@ -5,19 +5,27 @@ const {
   validateMovie,
   validatePartialMovie,
 } = require("./movie/schema/schemaMovie");
-const cors = require('cors')
+const cors = require("cors");
 
 const app = express();
 
 app.use(express.json());
-app.use(cors());
-
-const ACCEPTED_ORIGINS = [
-  "http://localhost:8080",
-  "http://localhost:321",
-  "http://localhost:1234",
-  "https://movies.com",
-];
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      const ACCEPTED_ORIGINS = [
+        "http://localhost:8080",
+        "http://localhost:321",
+        "http://localhost:1234",
+        "https://movies.com",
+      ];
+      if (ACCEPTED_ORIGINS.includes(origin) || !origin) {
+        return callback(null, true);
+      }
+      return callback(new Error("Not allowed by CORS"));
+    },
+  })
+);
 
 app.get("/movies", (req, res) => {
   const origin = req.header("origin");
