@@ -1,11 +1,11 @@
-const express = require("express");
-const ditto = require("./pokemon/ditto.json");
+import express, { json } from "express";
+import ditto from "./pokemon/ditto.json";
 
 const app = express();
 
 const PORT = 1234;
 
-app.use(express.json());
+app.use(json());
 
 /*  app.use((req, res, next) => {
   if (req.method !== "POST") return next();
